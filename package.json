@@ -1,0 +1,54 @@
+{
+  "name": "publicaciones",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "build": "remix build",
+    "dev": "remix dev --manual",
+    "start": "remix-serve ./build/index.js",
+    "typecheck": "tsc",
+    "migrate": "drizzle-kit generate:pg",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@clerk/remix": "3.0.8",
+    "@remix-run/css-bundle": "2.1.0",
+    "@remix-run/node": "2.1.0",
+    "@remix-run/react": "2.1.0",
+    "@remix-run/serve": "2.1.0",
+    "drizzle-orm": "0.28.6",
+    "isbot": "3.6.8",
+    "postgres": "3.4.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@remix-run/dev": "2.1.0",
+    "@remix-run/eslint-config": "2.1.0",
+    "@types/react": "18.2.20",
+    "@types/react-dom": "18.2.7",
+    "autoprefixer": "10.4.16",
+    "drizzle-kit": "0.19.13",
+    "eslint": "8.51.0",
+    "tailwindcss": "3.3.3",
+    "typescript": "5.1.6"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@remix-run/eslint-config",
+      "@remix-run/eslint-config/node"
+    ]
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "printWidth": 80,
+    "singleQuote": false,
+    "semi": true,
+    "trailingComma": "all",
+    "tabWidth": 2
+  }
+}

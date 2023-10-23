@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1697901728186,
+      "tag": "0000_rich_selene",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1698070863017,
+      "tag": "0001_known_hex",
+      "breakpoints": true
+    }
+  ]
+}

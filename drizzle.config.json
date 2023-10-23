@@ -1,0 +1,4 @@
+{
+  "schema": "./app/server/schema.ts",
+  "out": "./migrations"
+}
