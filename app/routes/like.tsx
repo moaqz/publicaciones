@@ -2,8 +2,8 @@ import { getAuth } from "@clerk/remix/ssr.server";
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { and, eq } from "drizzle-orm";
-import { db } from "~/server/connection";
-import { postsLikes } from "~/server/schema";
+import { db } from "~/server/connection.server";
+import { postsLikes } from "~/server/schema.server";
 
 export const action = async ({
   context,

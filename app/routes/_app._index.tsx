@@ -5,8 +5,8 @@ import { useLoaderData } from "@remix-run/react";
 import { desc, eq } from "drizzle-orm";
 import ComposePost from "~/components/compose-post";
 import PostCard from "~/components/post-card";
-import { db } from "~/server/connection";
-import { posts, users } from "~/server/schema";
+import { db } from "~/server/connection.server";
+import { posts, users } from "~/server/schema.server";
 import type { FeedData } from "~/types";
 
 export const meta: MetaFunction = () => {

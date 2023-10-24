@@ -1,6 +1,6 @@
 import { json, type ActionFunctionArgs } from "@remix-run/node";
-import { db } from "~/server/connection";
-import { users } from "~/server/schema";
+import { db } from "~/server/connection.server";
+import { users } from "~/server/schema.server";
 
 // Resource: https://docs.svix.com/receiving/verifying-payloads/why
 // Resource: https://clerk.com/docs/users/sync-data-to-your-backend

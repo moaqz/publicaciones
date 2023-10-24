@@ -11,8 +11,8 @@ import AppHeader from "~/components/app-header";
 import LikeButton from "~/components/like-button";
 import ShareButton from "~/components/share-button";
 import { formatDate } from "~/lib/date-utils";
-import { db } from "~/server/connection";
-import { posts, postsLikes, users } from "~/server/schema";
+import { db } from "~/server/connection.server";
+import { posts, postsLikes, users } from "~/server/schema.server";
 import type { PostPageData } from "~/types";
 
 export const loader = async ({
