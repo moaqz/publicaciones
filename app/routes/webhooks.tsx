@@ -1,4 +1,6 @@
+import type { WebhookEvent } from "@clerk/remix/api.server";
 import { json, type ActionFunctionArgs } from "@remix-run/node";
+import { Webhook } from "svix";
 import { db } from "~/server/connection.server";
 import { users } from "~/server/schema.server";
 
@@ -6,21 +8,29 @@ import { users } from "~/server/schema.server";
 // Resource: https://clerk.com/docs/users/sync-data-to-your-backend
 // It's a good practice to verify webhooks.
 const CLERK_CREATED_USER_EVENT = "user.created";
+const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET_KEY || "";
 
 export async function action({ request }: ActionFunctionArgs) {
-  const event = await request.json();
+  const body = JSON.stringify(await request.json());
+  const sivx = new Webhook(WEBHOOK_SECRET);
 
   try {
-    if (event.type === CLERK_CREATED_USER_EVENT) {
+    const payload = sivx.verify(body, {
+      "svix-id": request.headers.get("svix-id") ?? "",
+      "svix-signature": request.headers.get("svix-signature") ?? "",
+      "svix-timestamp": request.headers.get("svix-timestamp") ?? "",
+    }) as WebhookEvent;
+
+    if (payload.type === CLERK_CREATED_USER_EVENT) {
       await db.insert(users).values({
-        id: event.data.id,
-        username: event.data.username ?? event.data.first_name,
-        photo: event.data.image_url,
+        id: payload.data.id,
+        username: payload.data.username ?? payload.data.first_name,
+        photo: payload.data.image_url,
       });
     }
 
-    return json({ ok: true });
+    return json({ success: true });
   } catch (error) {
-    return json({ ok: false });
+    return json({ success: false });
   }
 }
