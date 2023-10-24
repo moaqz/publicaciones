@@ -1,6 +1,7 @@
 import { RedirectToSignIn, SignedIn, SignedOut } from "@clerk/remix";
 import { Outlet } from "@remix-run/react";
 import Navbar from "~/components/navbar";
+import { Toaster } from "sonner";
 
 export default function HomeLayout() {
   return (
@@ -14,6 +15,7 @@ export default function HomeLayout() {
             </div>
           </div>
         </main>
+        <Toaster richColors />
       </SignedIn>
 
       <SignedOut>

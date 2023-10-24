@@ -15,3 +15,10 @@ export type FeedData = {
   posts: Omit<Post, "userId">[];
   next: number | null;
 };
+
+export type PostPageData = {
+  post: Omit<Post, "userId"> & {
+    likesCount: string;
+  };
+  hasLiked: boolean;
+};

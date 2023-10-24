@@ -20,3 +20,14 @@ export function getRelativeTimeString(date: Date | number): string {
 
   return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]);
 }
+
+export function formatDate(date: Date | number): string {
+  const idf = new Intl.DateTimeFormat("en", {
+    hour: "numeric",
+    month: "short",
+    day: "numeric",
+    minute: "2-digit",
+  });
+
+  return idf.format(date);
+}
