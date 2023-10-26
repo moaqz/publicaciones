@@ -1,7 +1,6 @@
 import { getAuth } from "@clerk/remix/ssr.server";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import {
-  Link,
   isRouteErrorResponse,
   useLoaderData,
   useRouteError,
@@ -86,12 +85,9 @@ export default function PostPage() {
             className="h-10 w-10 rounded-full object-cover"
           />
 
-          <Link
-            to={`/${post.author.username}`}
-            className="text-gray-400 hover:underline"
-          >
+          <span className="text-gray-400 hover:underline">
             {post.author.username}
-          </Link>
+          </span>
         </div>
 
         <p className="text-gray-300">{post.content}</p>

@@ -1,12 +1,12 @@
-import { getAuth } from "@clerk/remix/ssr.server";
-import { redirect } from "@remix-run/node";
-import type { MetaFunction, ActionFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { desc, eq } from "drizzle-orm";
+import type { MetaFunction } from "@remix-run/node";
+import {
+  isRouteErrorResponse,
+  useLoaderData,
+  useRouteError,
+} from "@remix-run/react";
 import ComposePost from "~/components/compose-post";
 import PostCard from "~/components/post-card";
-import { db } from "~/server/connection.server";
-import { posts, users } from "~/server/schema.server";
+import { getPostsWithLikesCountQuery } from "~/server/helpers.server";
 import type { FeedData } from "~/types";
 
 export const meta: MetaFunction = () => {
@@ -16,52 +16,8 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const action = async ({
-  request,
-  context,
-  params,
-}: ActionFunctionArgs) => {
-  const { userId } = await getAuth({
-    request,
-    context,
-    params,
-  });
-
-  if (userId == null) {
-    return redirect("/sign-in?redirect_url=" + request.url);
-  }
-
-  const formData = await request.formData();
-  const content = String(formData.get("content"));
-
-  try {
-    await db.insert(posts).values({
-      content: content,
-      userId: userId,
-    });
-  } catch (error) {
-    return { ok: false };
-  }
-
-  return { ok: true };
-};
-
 export const loader = async () => {
-  const data = await db
-    .select({
-      id: posts.id,
-      content: posts.content,
-      media: posts.media,
-      created_at: posts.createdAt,
-      author: {
-        id: users.id,
-        username: users.username,
-        photo: users.photo,
-      },
-    })
-    .from(posts)
-    .innerJoin(users, eq(posts.userId, users.id))
-    .orderBy(desc(posts.createdAt));
+  const data = await getPostsWithLikesCountQuery();
 
   return {
     posts: data,
@@ -75,7 +31,6 @@ export default function HomePage() {
   return (
     <>
       <ComposePost />
-
       {posts && posts.length > 0 ? (
         posts.map((post) => {
           return <PostCard key={post.id} {...post} />;
@@ -86,5 +41,32 @@ export default function HomePage() {
         </p>
       )}
     </>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error) && error.status === 404) {
+    return (
+      <div className="px-4 py-5 space-y-1">
+        <span className="text-gray-400 font-semibold text-lg">404 Error</span>
+        <h1 className="text-2xl text-gray-100 font-bold pretty">
+          Sorry, we can't seem to find what you're looking for.
+        </h1>
+        <p className="text-lg text-gray-300 font-medium pretty">
+          You've landed on a URL that doesn't seem to exists on Publicaciones.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="px-4 py-5 space-y-1">
+      <span className="text-gray-400 font-semibold text-lg">500 Error</span>
+      <h1 className="text-2xl text-gray-100 font-bold pretty">
+        Oops, something went wrong.
+      </h1>
+    </div>
   );
 }

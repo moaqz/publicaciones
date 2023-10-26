@@ -1,8 +1,8 @@
 import { Link } from "@remix-run/react";
 import { getRelativeTimeString } from "~/lib/date-utils";
-import type { Post } from "~/types";
+import type { PostWithLikesCount } from "~/types";
 
-export default function PostCard(props: Omit<Post, "userId">) {
+export default function PostCard(props: PostWithLikesCount) {
   return (
     <Link
       to={`/${props.author.username}/${props.id}`}
@@ -25,8 +25,9 @@ export default function PostCard(props: Omit<Post, "userId">) {
 
           <p className="text-gray-300">{props.content}</p>
 
-          <span className="text-gray-500 text-sm font-semibold">
-            0 Comments, 0 Likes
+          <span className="text-gray-400 text-sm">
+            0 Comments, {props.likesCount}{" "}
+            {props.likesCount === "1" ? "Like" : "Likes"}
           </span>
         </div>
       </article>

@@ -11,14 +11,14 @@ export type Post = {
   };
 };
 
+export type PostWithLikesCount = Omit<Post, "userId"> & { likesCount: string };
+
 export type FeedData = {
-  posts: Omit<Post, "userId">[];
+  posts: PostWithLikesCount[];
   next: number | null;
 };
 
 export type PostPageData = {
-  post: Omit<Post, "userId"> & {
-    likesCount: string;
-  };
+  post: PostWithLikesCount;
   hasLiked: boolean;
 };
